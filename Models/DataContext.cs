@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace WordApi.Models
 {
@@ -12,6 +13,11 @@ namespace WordApi.Models
             this.Add(wordColor);
             this.SaveChanges();
             return wordColor;
+        }
+        public void DeleteWord(int id)
+        {
+            this.Remove(this.WordColors.FirstOrDefault(wc => wc.WordColorId == id));
+            this.SaveChanges();
         }
     }
 }
