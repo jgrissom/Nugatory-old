@@ -19,7 +19,6 @@ tasks.json
 .vscode
 *.sqlite
 *.sqlite-*
-Migrations
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
