@@ -24,5 +24,12 @@ namespace WordApi.Controllers
         {
             return _dataContext.WordColors.OrderBy(c => c.TS).ToArray();
         }
+        [HttpPost, Route("[controller]/wordcolor")]
+        // add event
+        public WordColor Post([FromBody] WordColor wc) => _dataContext.AddWord(new WordColor
+        {
+            Word = wc.Word,
+            Color = wc.Color
+        });
     }
 }

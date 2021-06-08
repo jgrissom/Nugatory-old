@@ -7,5 +7,11 @@ namespace WordApi.Models
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<WordColor> WordColors { get; set; }
+        public WordColor AddWord(WordColor wordColor)
+        {
+            this.Add(wordColor);
+            this.SaveChanges();
+            return wordColor;
+        }
     }
 }
