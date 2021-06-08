@@ -6,6 +6,6 @@ namespace WordApi.Models
         public int WordColorId { get; set; }
         public string Word { get; set; }
         public string Color { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public DateTime TS { get; set; }
     }
 }

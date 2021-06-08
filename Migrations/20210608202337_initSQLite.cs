@@ -15,7 +15,7 @@ namespace WordApi.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Word = table.Column<string>(type: "TEXT", nullable: true),
                     Color = table.Column<string>(type: "TEXT", nullable: true),
-                    TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    TimeStamp = table.Column<DateTime>(type: "DATETIME", defaultValue: "CURRENT_TIMESTAMP", nullable: false)
                 },
                 constraints: table =>
                 {
