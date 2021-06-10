@@ -16,7 +16,7 @@ div#container {
     transition: opacity 2s ease-in .5s;
 }
 .word.out {
-    transition: opacity .5s ease-out 0s;
+    transition: opacity .3s ease-out 0s;
 }
 div.word {
     position: absolute;

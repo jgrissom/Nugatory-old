@@ -26,7 +26,12 @@ namespace WordApi.Controllers
         {
             return _dataContext.WordColors.ToArray();
         }
-        [HttpGet, Route("after/{id}"), ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet("{id}")]
+        public WordColor Get(int id)
+        {
+            return _dataContext.WordColors.FirstOrDefault(wc => wc.Id == id);
+        }
+        [HttpGet("after/{id}"), ApiExplorerSettings(IgnoreApi = true)]
         public IEnumerable<WordColor> GetNew(int id)
         {
             return _dataContext.WordColors.Where(w => w.Id > id).ToArray();
