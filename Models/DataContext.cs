@@ -16,7 +16,7 @@ namespace WordApi.Models
         }
         public void DeleteWord(int id)
         {
-            this.Remove(this.WordColors.FirstOrDefault(wc => wc.WordColorId == id));
+            this.Remove(this.WordColors.FirstOrDefault(wc => wc.Id == id));
             this.SaveChanges();
         }
     }

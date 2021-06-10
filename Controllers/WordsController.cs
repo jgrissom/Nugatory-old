@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using WordApi.Models;
 
 namespace WordApi.Controllers
 {
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Route("[controller]/words")]
     public class ApiController : ControllerBase
     {
         private readonly ILogger<ApiController> _logger;
@@ -23,7 +24,12 @@ namespace WordApi.Controllers
         [HttpGet]
         public IEnumerable<WordColor> Get()
         {
-            return _dataContext.WordColors.OrderBy(c => c.TS).ToArray();
+            return _dataContext.WordColors.ToArray();
+        }
+        [HttpGet, Route("after/{id}"), ApiExplorerSettings(IgnoreApi = true)]
+        public IEnumerable<WordColor> GetNew(int id)
+        {
+            return _dataContext.WordColors.Where(w => w.Id > id).ToArray();
         }
         [HttpPost]
         public WordColor Post([FromBody] WordColor wc) => _dataContext.AddWord(new WordColor

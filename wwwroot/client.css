@@ -1,0 +1,33 @@
+body {
+    background: linear-gradient(to bottom, #202020, #000000);
+    font-family: 'Luckiest Guy', cursive;
+    font-size:4em;
+    text-shadow: 0px 0px 5px #ffffff;
+    margin:0px;
+    padding:0px;
+}
+div#container {
+    margin:0px;
+    padding:0px;
+    width:100%;
+    height:100%;
+}
+.word.in {
+    transition: opacity 2s ease-in .5s;
+}
+.word.out {
+    transition: opacity .5s ease-out 0s;
+}
+div.word {
+    position: absolute;
+    opacity: 0;
+    z-index: 100;
+    color: #ffffff;
+    cursor: pointer;
+}
+h1 {
+    text-align: center;
+    color: #202020;
+    opacity: .8;
+    z-index: -1;
+}
