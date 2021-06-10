@@ -10,7 +10,7 @@ using WordApi.Models;
 
 namespace WordApi.Controllers
 {
-    [ApiController, Route("[controller]/words")]
+    [ApiController, Route("[controller]/word")]
     public class ApiController : ControllerBase
     {
         private readonly ILogger<ApiController> _logger;

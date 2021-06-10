@@ -32,7 +32,11 @@ namespace WordApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WordApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "NugatoryAPI", 
+                    Version = "v1",
+                    Description = "A totally useless API",
+                });
             });
         }
 
@@ -45,7 +49,7 @@ namespace WordApi
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WordApi v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NugatoryAPI v1"));
 
             app.UseHttpsRedirection();
 
