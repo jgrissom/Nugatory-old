@@ -6,9 +6,9 @@ let maxId = 0;
 let intervalId;
 
 window.onload = function() {
-    getData('api/words');
+    getData('api/word');
     intervalId = setInterval( () => {
-        getData('api/words/after/' + maxId);
+        getData('api/word/after/' + maxId);
     }, 3000 );
 }
 
@@ -47,7 +47,7 @@ function getRandomNumber(min, max) {
 document.getElementById('container').onclick = function(event) {
     const obj = event.target.closest('div')
     if (obj.classList.contains('word')){
-        fetch('api/words/' + obj.id, { method: 'DELETE', })
+        fetch('api/word/' + obj.id, { method: 'DELETE', })
             .then(res => res.status)
             .then(() => {
                 clearInterval(intervalId);
@@ -57,7 +57,7 @@ document.getElementById('container').onclick = function(event) {
                 obj.addEventListener("transitionend", () => {
                     obj.remove();
                     intervalId = setInterval( () => {
-                        getData('api/words/after/' + maxId);
+                        getData('api/word/after/' + maxId);
                     }, 3000 );
                 })
             }).catch(error => {
