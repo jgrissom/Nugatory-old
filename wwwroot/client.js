@@ -2,16 +2,12 @@
 const container = document.getElementById('container');
 const width = container.clientWidth;
 const height = container.clientHeight;
-let maxId = 0;
-let intervalId;
 
 window.onload = function() {
     getData('api/word');
-    // intervalId = setInterval( () => {
-    //     getData('api/word/after/' + maxId);
-    // }, 3000 );
 }
 
+// get initial data from db using AJAX
 function getData(url) {
     fetch(url)
         .then(response => response.json())
@@ -21,7 +17,9 @@ function getData(url) {
         });
 }
 
+// place words in window at randow top, left
 function placeWords(words){
+    console.log(words);
     if (words) {
         words.forEach(word => {
             const id = word.id;
@@ -30,7 +28,6 @@ function placeWords(words){
             // update top and left position
             div.style.top = getRandomNumber(0, height - div.clientHeight) +"px";
             div.style.left = getRandomNumber(0, width - div.clientWidth) +"px";
-            // maxId = maxId >= id ? maxId : id;
         });
         const divs = document.getElementsByClassName('word');
         for ( let i=0; i < divs.length; i++ ) {
@@ -44,24 +41,18 @@ function getRandomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// document.getElementById('container').onclick = function(event) {
-//     const obj = event.target.closest('div')
-//     if (obj.classList.contains('word')){
-//         fetch('api/word/' + obj.id, { method: 'DELETE', })
-//             .then(res => res.status)
-//             .then(() => {
-//                 // clearInterval(intervalId);
-//                 obj.classList.remove('in');
-//                 obj.classList.add('out');
-//                 obj.style.opacity = 0;
-//                 obj.addEventListener("transitionend", () => {
-//                     obj.remove();
-//                     // intervalId = setInterval( () => {
-//                     //     getData('api/word/after/' + maxId);
-//                     // }, 3000 );
-//                 })
-//             }).catch(error => {
-//                 console.error('There has been a problem with your fetch operation:', error);
-//             });
-//     }
-// };
+// delegated event listener attached to click event for each word
+document.getElementById('container').onclick = function(event) {
+    const obj = event.target.closest('div')
+    if (obj.classList.contains('word')){
+        // AJAX call to delete the word from DB
+        event.preventDefault();
+        fetch('api/word/' + obj.id, { method: 'DELETE', })
+            .then(res => res.status)
+            .then(() => {
+                console.log('deleted');
+            }).catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+};

@@ -65,7 +65,7 @@ namespace WordApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<WordHub>("/wordHub");
+                endpoints.MapHub<NugatoryHub>("/nugatoryHub");
             });
         }
     }
