@@ -30,6 +30,8 @@ namespace WordApi.Controllers
             return _dataContext.WordColors.ToArray();
         }
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public WordColor Get(int id)
         {
             return _dataContext.WordColors.FirstOrDefault(wc => wc.Id == id);
@@ -40,15 +42,20 @@ namespace WordApi.Controllers
             return _dataContext.WordColors.Where(w => w.Id > id).ToArray();
         }
         [HttpPost]
-        public async Task<WordColor> Post([FromBody] WordColor wc) {
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] WordColor wc) {
+            if (String.IsNullOrEmpty(wc.Word))
+            {
+                return BadRequest();
+            }
             WordColor wordColor = _dataContext.AddWord(new WordColor
             {
                 Word = wc.Word,
                 Color = wc.Color
             });
-            // await _hubContext.Clients.All.SendAsync("ReceiveAddMessage", Convert.ToString(wordColor.Id));
             await _hubContext.Clients.All.SendAsync("ReceiveAddMessage", wordColor);
-            return wordColor;
+            return new JsonResult(wordColor);
         } 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
