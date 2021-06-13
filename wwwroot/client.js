@@ -17,7 +17,7 @@ function getData(url) {
         });
 }
 
-// place words in window at randow top, left
+// place words in window at random top, left
 function placeWords(words){
     console.log(words);
     if (words) {
