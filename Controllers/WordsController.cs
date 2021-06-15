@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using WordApi.Models;
 using Microsoft.AspNetCore.SignalR;
 using WordApi.Hubs;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WordApi.Controllers
 {
@@ -25,48 +26,48 @@ namespace WordApi.Controllers
             _hubContext = hubContext;
         }
         [HttpGet]
+        [SwaggerOperation(summary: "returns all words", null)]
         public IEnumerable<WordColor> Get()
         {
             return _dataContext.WordColors.ToArray();
         }
+
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public WordColor Get(int id)
+        [SwaggerOperation(summary: "returns specific word", null)]
+        public async Task<ActionResult<WordColor>> Get(int id)
         {
-            return _dataContext.WordColors.FirstOrDefault(wc => wc.Id == id);
+            var word = await _dataContext.WordColors.FindAsync(id);
+           if (word == null)
+           {
+               return NotFound();
+           }
+           return word;
         }
-        [HttpGet("after/{id}"), ApiExplorerSettings(IgnoreApi = true)]
-        public IEnumerable<WordColor> GetNew(int id)
-        {
-            return _dataContext.WordColors.Where(w => w.Id > id).ToArray();
-        }
+
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] WordColor wc) {
-            if (String.IsNullOrEmpty(wc.Word))
-            {
-                return BadRequest();
-            }
-            WordColor wordColor = _dataContext.AddWord(new WordColor
-            {
-                Word = wc.Word,
-                Color = wc.Color
-            });
+        [SwaggerOperation(summary: "add word to collection", null)]
+        [ProducesResponseType(typeof(WordColor), 201), SwaggerResponse(201, "Created")]
+        public async Task<ActionResult<WordColor>> Post([FromBody] WordColor wordColor) {
+            _dataContext.Add(wordColor);
+            await _dataContext.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("ReceiveAddMessage", wordColor);
-            return new JsonResult(wordColor);
-        } 
+            this.HttpContext.Response.StatusCode = 201;
+            return wordColor;
+        }
+
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation(summary: "delete score from collection", null)]
+        [ProducesResponseType(typeof(WordColor), 204), SwaggerResponse(204, "No Content")]
         public async Task<ActionResult> Delete(int id){
-            WordColor wc = _dataContext.WordColors.Find(id);
-            if (wc == null){
+            var wordColor = await _dataContext.WordColors.FindAsync(id);
+            if (wordColor == null){
                 return NotFound();
             }
-            _dataContext.DeleteWord(id);
+
+            _dataContext.WordColors.Remove(wordColor);
+            await _dataContext.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("ReceiveDeleteMessage", Convert.ToString(id));
+            
             return NoContent();
         } 
     }
